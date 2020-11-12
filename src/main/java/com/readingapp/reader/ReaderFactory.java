@@ -1,8 +1,8 @@
 package com.readingapp.reader;
 
 import com.readingapp.reader.CSVReader.CSVReader;
-import com.readingapp.reader.CSVReader.CustomValidator;
-import com.readingapp.reader.CSVReader.Validator;
+import com.readingapp.reader.CSVReader.CustomAllocator;
+import com.readingapp.reader.CSVReader.Allocator;
 import com.readingapp.reader.XMLReader.StAXReader;
 
 import javax.xml.stream.XMLEventReader;
@@ -15,49 +15,38 @@ import java.util.Scanner;
 public class ReaderFactory {
 
 
-    public Reader createReader(String type, String filePath) {
+    public Reader createReader(String type, String filePath) throws FileNotFoundException, XMLStreamException {
 
-        if (type.equals("xml"))
-            return createXmlReader(filePath);
-        else if (type.equals("txt"))
-            return createCSVReader(filePath);
-        else
-            throw new IllegalArgumentException("Illegal Parameter value");
+
+        switch (type) {
+
+            case "xml":
+
+                return createXmlReader(filePath);
+
+            case "txt":
+
+                return createCSVReader(filePath);
+
+            default:
+                throw new IllegalArgumentException("Illegal Extension Parameter value, check filepath in config.properties");
+
+        }
     }
 
+    private Reader createCSVReader(String filePath) throws FileNotFoundException {
 
-    private Reader createCSVReader(String filePath) {
 
-        Scanner scanner;
-        try {
-            FileInputStream inputStream = new FileInputStream(filePath);
-            scanner = new Scanner(inputStream, "UTF-8");
+        Scanner scanner = new Scanner(new FileInputStream(filePath), "UTF-8");
+        Allocator allocator = new CustomAllocator();
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
-            return null;
-        }
-
-        Validator validator = new CustomValidator();
-
-        return new CSVReader(scanner, validator);
+        return new CSVReader(scanner, allocator);
     }
 
-    private Reader createXmlReader(String filePath) {
+    private Reader createXmlReader(String filePath) throws FileNotFoundException, XMLStreamException {
 
-        XMLEventReader xmlEventReader;
-
-        try {
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            xmlEventReader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
-
-        } catch (XMLStreamException e) {
-            System.out.println("XMLStream Exception" + e.getMessage());
-            return null;
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found Exception" + e.getMessage());
-            return null;
-        }
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
 
         return new StAXReader(xmlEventReader);
     }

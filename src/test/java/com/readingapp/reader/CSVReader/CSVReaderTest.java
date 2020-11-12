@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +20,7 @@ class CSVReaderTest {
     void setUp() throws FileNotFoundException {
 
         Scanner scanner = new Scanner(new FileInputStream("dane-osoby.txt"));
-        csvReader = new CSVReader(scanner, new CustomValidator());
+        csvReader = new CSVReader(scanner, new CustomAllocator());
     }
 
     @Test
@@ -31,10 +32,9 @@ class CSVReaderTest {
         customer.addContact(new Contact(1, "jan@gmail.com"));
 
 
-        Customer readCustomer = csvReader.readPerson();
+        Optional<Customer> readCustomer = csvReader.readPerson();
 
-
-        assertEquals(customer, readCustomer);
+        assertEquals(Optional.of(customer), readCustomer);
 
     }
 }

@@ -10,25 +10,23 @@ public class Datasource {
 
     private Connection connection;
 
-    public static final String INSERT_CUSTOMER = "INSERT INTO customers ( name, surname, age) VALUES (?,?,?)";
-    public static final String INSERT_CONTACT = "INSERT INTO contacts (type, contact, customers_id) VALUES (?,?,?)";
+    private static final String INSERT_CUSTOMER = "INSERT INTO customers ( name, surname, age) VALUES (?,?,?)";
+    private static final String INSERT_CONTACT = "INSERT INTO contacts (type, contact, customers_id) VALUES (?,?,?)";
 
 
     private PreparedStatement insertIntoCustomer;
     private PreparedStatement insertIntoContact;
 
 
-    public void open(String url, String username, String password) {
+    public void open(String url, String username, String password) throws SQLException {
 
-        try {
+
 
             connection = DriverManager.getConnection(url, username, password);
             insertIntoCustomer = connection.prepareStatement(INSERT_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
             insertIntoContact = connection.prepareStatement(INSERT_CONTACT, Statement.RETURN_GENERATED_KEYS);
 
-        } catch (SQLException e) {
-            System.out.println("Couldn't connect to db: " + e.getMessage());
-        }
+
     }
 
     public void insertIntoCustomer(Customer customer) throws SQLException {

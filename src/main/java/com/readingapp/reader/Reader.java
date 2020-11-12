@@ -3,9 +3,10 @@ package com.readingapp.reader;
 import com.readingapp.model.Customer;
 
 import javax.xml.stream.XMLStreamException;
+import java.util.Optional;
 
 public interface Reader {
 
-    Customer readPerson() throws XMLStreamException;
+    Optional<Customer> readPerson() throws XMLStreamException;
 
 }

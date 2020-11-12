@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ReaderFactoryTest {
@@ -19,7 +22,7 @@ class ReaderFactoryTest {
     }
 
     @Test
-    void createReader_xml_success() {
+    void createReader_xml_success() throws FileNotFoundException, XMLStreamException {
 
         Reader reader = readerFactory.createReader("xml", "dane-osoby.xml");
 
@@ -28,7 +31,7 @@ class ReaderFactoryTest {
     }
 
     @Test
-    void createReader_txt_success() {
+    void createReader_txt_success() throws FileNotFoundException, XMLStreamException {
 
         Reader reader = readerFactory.createReader("txt", "dane-osoby.xml");
 

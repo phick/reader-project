@@ -44,7 +44,7 @@ public class Contact {
         if (o == null || getClass() != o.getClass()) return false;
         Contact contact1 = (Contact) o;
         return type == contact1.type &&
-                contact.equals(contact1.contact);
+                Objects.equals(contact, contact1.contact);
     }
 
     @Override
