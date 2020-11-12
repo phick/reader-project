@@ -1,3 +1,10 @@
+Application features:
+- read structured xml or csv file using StAX
+- insert readed data into db using JDBC
+
+
+
+
 Steps to set up your project.
 
 1. Clone the application.
